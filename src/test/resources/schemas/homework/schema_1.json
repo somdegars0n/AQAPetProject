@@ -1,0 +1,218 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Order Details Schema",
+  "description": "Схема для валидации данных заказа",
+  "type": "object",
+  "required": ["responseMetadata", "order"],
+  "properties": {
+    "responseMetadata": {
+      "type": "object",
+      "required": ["requestId", "timestamp", "statusCode", "processingTimeMs"],
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "description": "Уникальный идентификатор запроса",
+          "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Временная метка обработки запроса"
+        },
+        "statusCode": {
+          "type": "integer",
+          "description": "HTTP-статус код ответа",
+          "minimum": 100,
+          "maximum": 599
+        },
+        "processingTimeMs": {
+          "type": "integer",
+          "description": "Время обработки в миллисекундах",
+          "minimum": 0
+        }
+      }
+    },
+    "order": {
+      "type": "object",
+      "required": ["id", "createdAt", "status", "customerId", "totalAmount", "currency", "items"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Уникальный ID заказа",
+          "pattern": "^ORD-\\d{4}-\\d{2}-\\d{2}-\\d{5}$"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["PROCESSING", "SHIPPED", "DELIVERED", "CANCELLED"],
+          "description": "Текущий статус заказа"
+        },
+        "paymentStatus": {
+          "type": "string",
+          "enum": ["PAID", "PENDING", "FAILED", "REFUNDED"]
+        },
+        "customerId": {
+          "type": "string",
+          "pattern": "^CUST-\\d{5}$"
+        },
+        "totalAmount": {
+          "type": "number",
+          "minimum": 0
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "discountApplied": {
+          "type": "boolean"
+        },
+        "discountPercent": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "taxAmount": {
+          "type": "number",
+          "minimum": 0
+        },
+        "shippingAddress": {
+          "type": "object",
+          "required": ["fullName", "city", "country"],
+          "properties": {
+            "fullName": { "type": "string" },
+            "street": { "type": "string" },
+            "city": { "type": "string" },
+            "region": { "type": "string" },
+            "postalCode": { "type": "string" },
+            "country": { "type": "string", "pattern": "^[A-Z]{2}$" },
+            "isDefault": { "type": "boolean" },
+            "coordinates": {
+              "type": "array",
+              "items": { "type": "number" },
+              "minItems": 2,
+              "maxItems": 2
+            }
+          }
+        },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["id", "productId", "name", "quantity", "unitPrice"],
+            "properties": {
+              "id": { "type": "string" },
+              "productId": { "type": "string" },
+              "name": { "type": "string" },
+              "quantity": { "type": "integer", "minimum": 1 },
+              "unitPrice": { "type": "number", "minimum": 0 },
+              "totalPrice": { "type": "number", "minimum": 0 },
+              "discount": { "type": "number", "minimum": 0 },
+              "attributes": { "type": "object" },
+              "inStock": { "type": "boolean" }
+            }
+          }
+        },
+        "paymentDetails": {
+          "type": "object",
+          "properties": {
+            "method": {
+              "type": "string",
+              "enum": ["CREDIT_CARD", "PAYPAL", "CASH_ON_DELIVERY"]
+            },
+            "cardInfo": {
+              "type": "object",
+              "properties": {
+                "lastFourDigits": { "type": "string", "pattern": "^\\d{4}$" },
+                "cardType": { "type": "string", "enum": ["VISA", "MASTERCARD", "MIR"] }
+              }
+            },
+            "transactions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "string" },
+                  "status": { "type": "string" },
+                  "amount": { "type": "number" },
+                  "timestamp": { "type": "string", "format": "date-time" }
+                }
+              }
+            }
+          }
+        },
+        "shipping": {
+          "type": "object",
+          "properties": {
+            "method": { "type": "string" },
+            "carrier": { "type": "string" },
+            "trackingNumber": { "type": "string" },
+            "estimatedDelivery": { "type": "string", "format": "date-time" },
+            "cost": { "type": "number", "minimum": 0 },
+            "stages": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "status": { "type": "string" },
+                  "timestamp": { "type": "string", "format": "date-time" },
+                  "comment": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "notes": {
+          "type": ["string", "null"]
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {
+            "source": { "type": "string" },
+            "version": { "type": "string" },
+            "promotionCode": { "type": "string" }
+          }
+        }
+      }
+    },
+    "relatedOrders": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^ORD-\\d{4}-\\d{2}-\\d{2}-\\d{5}$"
+      }
+    },
+    "recommendedProducts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "price": { "type": "number", "minimum": 0 },
+          "rating": { "type": "number", "minimum": 0, "maximum": 5 },
+          "inStock": { "type": "boolean" }
+        }
+      }
+    },
+    "debug": {
+      "type": "object",
+      "properties": {
+        "cacheMiss": { "type": "boolean" },
+        "dbQueryTimeMs": { "type": "integer", "minimum": 0 },
+        "apiVersion": { "type": "string" }
+      }
+    }
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "responseMetadata": {
+    "requestId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "timestamp": "2023-11-15T14:30:45.123Z",
+    "statusCode": 200,
+    "processingTimeMs": 78
+  },
+  "order": {
+    "id": "ORD-2023-11-15-42789",
+    "createdAt": "2023-11-15T08:15:30Z",
+    "updatedAt": "2023-11-15T14:28:45Z",
+    "status": "PROCESSING",
+    "paymentStatus": "PAID",
+    "customerId": "CUST-98765",
+    "totalAmount": 12750.5,
+    "currency": "RUB",
+    "discountApplied": true,
+    "discountPercent": 15.5,
+    "taxAmount": 1912.58,
+    "shippingAddress": {
+      "fullName": "Иван Петров",
+      "street": "ул. Ленина, 42",
+      "city": "Москва",
+      "region": "Московская область",
+      "postalCode": "123456",
+      "country": "RU",
+      "isDefault": true,
+      "coordinates": [
+        55.7558,
+        37.6173
+      ]
+    },
+    "items": [
+      {
+        "id": "ITEM-001",
+        "productId": "PROD-857",
+        "name": "Смартфон Galaxy X20",
+        "quantity": 1,
+        "unitPrice": 10999.99,
+        "totalPrice": 10999.99,
+        "discount": 0,
+        "attributes": {
+          "color": "черный",
+          "storage": "128GB",
+          "warranty": "12 месяцев"
+        },
+        "inStock": true
+      },
+      {
+        "id": "ITEM-002",
+        "productId": "PROD-443",
+        "name": "Защитное стекло Premium",
+        "quantity": 2,
+        "unitPrice": 999,
+        "totalPrice": 1998,
+        "discount": 10,
+        "attributes": {
+          "compatibility": [
+            "Galaxy X20",
+            "Galaxy X19"
+          ],
+          "type": "закаленное стекло"
+        },
+        "inStock": true
+      }
+    ],
+    "paymentDetails": {
+      "method": "CREDIT_CARD",
+      "cardInfo": {
+        "lastFourDigits": "1234",
+        "cardType": "VISA"
+      },
+      "transactions": [
+        {
+          "id": "TXN-12345",
+          "status": "SUCCESS",
+          "amount": 12750.5,
+          "timestamp": "2023-11-15T08:16:42Z"
+        }
+      ]
+    },
+    "shipping": {
+      "method": "EXPRESS",
+      "carrier": "DHL",
+      "trackingNumber": "DHL7891234567",
+      "estimatedDelivery": "2023-11-18T12:00:00Z",
+      "cost": 750,
+      "stages": [
+        {
+          "status": "PROCESSING",
+          "timestamp": "2023-11-15T08:30:00Z",
+          "comment": "Заказ обрабатывается"
+        },
+        {
+          "status": "PACKAGING",
+          "timestamp": "2023-11-15T10:15:00Z",
+          "comment": "Заказ упаковывается"
+        },
+        {
+          "status": "READY_FOR_PICKUP",
+          "timestamp": "2023-11-15T14:20:00Z",
+          "comment": "Заказ готов к отправке"
+        }
+      ]
+    },
+    "tags": [
+      "premium",
+      "express",
+      "smartphone"
+    ],
+    "notes": null,
+    "metadata": {
+      "source": "mobile_app",
+      "version": "2.3.1",
+      "promotionCode": "FALL2023"
+    }
+  },
+  "relatedOrders": [
+    "ORD-2023-10-05-38912",
+    "ORD-2023-08-17-29876"
+  ],
+  "recommendedProducts": [
+    {
+      "id": "PROD-123",
+      "name": "Беспроводные наушники SoundMax",
+      "price": 3999.5,
+      "rating": 4.7,
+      "inStock": true
+    },
+    {
+      "id": "PROD-456",
+      "name": "Портативный аккумулятор PowerBank 10000mAh",
+      "price": 2499.99,
+      "rating": 4.5,
+      "inStock": true
+    }
+  ],
+  "debug": {
+    "cacheMiss": false,
+    "dbQueryTimeMs": 45,
+    "apiVersion": "v2.1.0"
+  }
+}
